@@ -1,7 +1,7 @@
 # Soundloom
 Trevor Wishart's GUI Front End for the CDP System
 
-This is a substatial application written in the scripting language Tcl-Tk. As well as driving all the programs in the current CDP system (repository CDPR8), it supports large-scale macro management of composition projects.
+This is a substantial application written in the scripting language Tcl-Tk. As well as driving all the programs in the current CDP system (repository CDPR8), it supports large-scale macro management of composition projects.
 
 Soundloom was created under Windows, and later the code was adapted to run on the Mac. 
 Accordingly there are two separate code sets. 
