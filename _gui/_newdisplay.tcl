@@ -6419,6 +6419,8 @@ proc DoTV {typ listing f tell} {
 			set k [ReverseSearch $pitches $pitchoff]
 			if {$k >= 0} {
 				set outvalon [lindex $outvals $k]
+# RWD 10-2024: this is where MIDI durations are calculated. Need to add code to reduce to (say) 4 decimal places
+# can use "set tcl_precision" - but where?
 				set dur [expr [lindex $outval $evv(TV_TIME)] - [lindex $outvalon $evv(TV_TIME)]]
 				if {$dur > 0} {
 					lappend outvalon $dur
