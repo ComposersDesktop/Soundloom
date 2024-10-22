@@ -118,10 +118,21 @@ proc EditSrcMixfile {typ} {
 		}	
 		set f1  [frame $f.1 -borderwidth $evv(SBDR)]
 		set help [frame $f1.h]
-		button $help.hlp -text "Help" -bg $evv(HELP) -command "ActivateHelp $mixd2.1.h" -width 4 -highlightbackground [option get . background {}]
+#RWD Oct 2024
+		if { $::tcl_platform(platform) == "windows" } {
+			button $help.hlp -text "Help" -bg $evv(HELP) -command "ActivateHelp $mixd2.1.h" -width 4
+		} else {		
+			button $help.hlp -text "Help" -bg $evv(HELP) -command "ActivateHelp $mixd2.1.h" -width 4 -highlightbackground [option get . background {}]
+		}
 		label  $help.conn -text "" -width 13
-		button $help.con -text "" -borderwidth 0 -state disabled -width 8 -highlightbackground [option get . background {}]
-		label $help.help -width 84 -text "$evv(HELP_DEFAULT)" -fg [option get . foreground {}]
+#RWD Oct 2024
+		if { $::tcl_platform(platform) == "windows" } {
+			button $help.con -text "" -borderwidth 0 -state disabled -width 8
+			label $help.help -width 84 -text "$evv(HELP_DEFAULT)"
+		} else {
+			button $help.con -text "" -borderwidth 0 -state disabled -width 8 -highlightbackground [option get . background {}]
+			label $help.help -width 84 -text "$evv(HELP_DEFAULT)" -fg [option get . foreground {}]
+		}
 		pack $help.hlp $help.conn $help.con $help.help -side left
 		if {$longqik} {
 			button $help.tips -text "Tips" -bg $evv(HELP) -command "TipsQik" -width 4 -highlightbackground [option get . background {}]
@@ -134,20 +145,27 @@ proc EditSrcMixfile {typ} {
 		label $bb.title -text "STANDARD MIXFILE" -font bigfnt
 		pack $bb.title -side top -pady 8
 		set u  [frame $f1.u -borderwidth $evv(SBDR)]
-		button $u.gp -text "Previous State"  -width 14 -command {MixModify reinstate $m_list $mixval $tempmix; set tempmix 1} -background $evv(EMPH) -highlightbackground [option get . background {}]
-		button $u.ii -text "Initial State"  -width 14 -command {MixRestore 0} -background $evv(EMPH) -highlightbackground [option get . background {}]
-		button $u.rs -text "Restore Orig"  -width 14 -command {MixRestore 1} -background $evv(EMPH) -highlightbackground [option get . background {}]
+#RWD Oct 2024
+		if { $::tcl_platform(platform) == "windows" } {
+			button $u.gp -text "Get Previous State"  -width 17 -command {MixModify reinstate $m_list $mixval $tempmix; set tempmix 1} -background $evv(EMPH)
+			button $u.ii -text "Get Initial State"  -width 17 -command {MixRestore 0} -background $evv(EMPH) 
+		} else {	
+			button $u.gp -text "Get Previous State"  -width 17 -command {MixModify reinstate $m_list $mixval $tempmix; set tempmix 1} -background $evv(EMPH) -highlightbackground [option get . background {}]
+			button $u.ii -text "Get Initial State"  -width 17 -command {MixRestore 0} -background $evv(EMPH) -highlightbackground [option get . background {}]
+		}
+		
+		button $u.rs -text "Restore Original"  -width 17 -command {MixRestore 1} -background $evv(EMPH) -highlightbackground [option get . background {}]
 		button $u.view -text "View Selected Sound" -command "QikEditor view" -bg $evv(SNCOLOR) -highlightbackground [option get . background {}]
-		button $u.getm  -text "Snds To Submix" -command "QikEditGet 1" -bg $evv(QUIT_COLOR) -highlightbackground [option get . background {}]
-		button $u.get  -text "Snd To Wkspace" -command "QikEditGet 0" -bg $evv(QUIT_COLOR) -highlightbackground [option get . background {}]
+		button $u.getm  -text "Sounds To Submix" -command "QikEditGet 1" -bg $evv(QUIT_COLOR) -highlightbackground [option get . background {}]
+		button $u.get  -text "Sound To Wkspace" -command "QikEditGet 0" -bg $evv(QUIT_COLOR) -highlightbackground [option get . background {}]
 		pack $u.gp $u.ii $u.rs $u.view $u.getm $u.get -side left -padx 2
 		set s  [frame $f1.see -borderwidth $evv(SBDR)]
-		button $b.ok -text "Quit(no edit)" -width 13 -command "set pr12_34 0" -bg $evv(QUIT_COLOR) -highlightbackground [option get . background {}]
-		button $b.ed -text "Keep Edited" -width 11 -command "set pr12_34 1" -bg $evv(EMPH) -highlightbackground [option get . background {}]
+		button $b.ok -text "Quit (no edit)" -width 14 -command "set pr12_34 0" -bg $evv(QUIT_COLOR) -highlightbackground [option get . background {}]
+		button $b.ed -text "Keep Edited Version" -width 19 -command "set pr12_34 1" -bg $evv(EMPH) -highlightbackground [option get . background {}]
 		button $b.sk -text "Search" -width 5 -command "SearchQikEdit 0" -highlightbackground [option get . background {}]
 		button $b.ag -text "Again" -width 5 -command "SearchQikEdit 1" -highlightbackground [option get . background {}]
-		button $b.go -text "To time(Value)"	-command GotoTimeQik -highlightbackground [option get . background {}]
-		button $b.ca -text "Calc" -width 4 -command "MusicUnitConvertor 6 0" -bg $evv(HELP) -highlightbackground [option get . background {}]
+		button $b.go -text "Go To time(Value)"	-command GotoTimeQik -highlightbackground [option get . background {}]
+		button $b.ca -text "Calculator" -width 8 -command "MusicUnitConvertor 6 0" -bg $evv(HELP) -highlightbackground [option get . background {}]
 		button $b.re -text "Ref" -width 4 -command "QikRef" -bg $evv(HELP) -highlightbackground [option get . background {}]
 		button $b.no -text "Notebook" -width 8 -command NnnSee -bg $evv(HELP) -highlightbackground [option get . background {}]
 		button $b.aa -text "A" -bd 4 -command "PlaySndfile $evv(TESTFILE_A) 0" -width 2 -bg $evv(HELP) -highlightbackground [option get . background {}]
@@ -251,8 +269,11 @@ proc EditSrcMixfile {typ} {
 		$m2 add command -label "End-Time (Relative To Mix Timings)" -command "MixEndValQik 1" -foreground black
 		$m2 add separator
 		$m2 add command -label "Real Duration" -command "MixEndValQik 2" -foreground black
-
-		label $s.000.dumm1 -text "" -command {} -bd 0 -width 11 -foreground black
+# RWD Oct 2024
+		# here, this would be better on Mac as a label, but later on it becomes a real button)   
+    	button $s.000.dumm1 -text "" -command {} -bd 0 -width 11 -highlightbackground [option get . background {}]
+    	
+			
 		menubutton $s.000.ll2 -text "SelectLines" -menu $s.000.ll2.m -bd 2 -relief raised -width 13
 		set m3 [menu $s.000.ll2.m -tearoff 0]
 		$m3 add command -label "All" -command "QikEditorSelectAll" -foreground black
@@ -280,9 +301,13 @@ proc EditSrcMixfile {typ} {
 		$m3 add command -label "Filename-segment Starts With String" -command "QikEditorSelectBystring 1" -foreground black
 		$m3 add separator
 		$m3 add command -label "Get Filename to \"Value\" Box" -command "GetFilenameToVal" -foreground black
-
-		label $s.000.dumm2 -text "" -width 3
-		button $s.000.dft -text "Whole Mix" -command "QikEditor dflts" -width 9 -highlightbackground [option get . background {}]
+# RWD Oct 2024
+		if { $::tcl_platform(platform) == "windows" } { 
+			button $s.000.dumm2 -text ""  -command {} -bd 0 -width 11
+		} else {
+			label $s.000.dumm2 -text "" -width 11
+		}
+		button $s.000.dft -text "Do Whole Mix" -command "QikEditor dflts" -width 13 -highlightbackground [option get . background {}]
 		pack $s.000.ll $s.000.frm $s.000.mev $s.000.tap $s.000.mm $s.000.dumm1 $s.000.ll2 $s.000.dumm2 -side left -padx 1 
 		pack $s.000.dft -side left -padx 4 
 		pack $s.000 -side top -pady 2
@@ -295,14 +320,14 @@ proc EditSrcMixfile {typ} {
 		set m_list [Scrolled_Listbox $s.1.seefile -width $qikwid -height $evv(QIKEDITLEN) -selectmode extended]
 		pack $s.1.seefile -side top -fill both -expand true
 		frame $s.1.foot2
-		button $s.1.foot2.ss -text "Save+Mix Version" -command "QikSaveAndMix" -bg $evv(EMPH) -width 15 -highlightbackground [option get . background {}]
+		button $s.1.foot2.ss -text "Save And Mix Version" -command "QikSaveAndMix" -bg $evv(EMPH) -width 24 -highlightbackground [option get . background {}]
 		button $s.1.foot2.mx -text "MaxSamp" -command "QikMaxsamp" -highlightbackground [option get . background {}]
 		button $s.1.foot2.mq -text "MaxChan" -command MaxsampMultichanChans -highlightbackground [option get . background {}]
 		label $s.1.foot2.ll -text "Last Output" -width 11
-		button $s.1.foot2.pp -text "Play Snd" -command "QikOutView 0" -width 9 -highlightbackground [option get . background {}]
+		button $s.1.foot2.pp -text "Play Sound" -command "QikOutView 0" -width 11 -highlightbackground [option get . background {}]
 		button $s.1.foot2.cc -text "Play Chans" -command "PlayChannel 1" -width 9 -highlightbackground [option get . background {}]
-		button $s.1.foot2.vv -text "View Snd" -command "QikOutView 1" -bg $evv(SNCOLOR) -width 9 -highlightbackground [option get . background {}]
-		button $s.1.foot2.qq -text "Keep Snd Mixed" -command "QikKeep" -bg $evv(QUIT_COLOR) -width 15 -highlightbackground [option get . background {}]
+		button $s.1.foot2.vv -text "View Sound" -command "QikOutView 1" -bg $evv(SNCOLOR) -width 11 -highlightbackground [option get . background {}]
+		button $s.1.foot2.qq -text "Keep Sound Mixed Here" -command "QikKeep" -bg $evv(QUIT_COLOR) -width 24 -highlightbackground [option get . background {}]
 		pack $s.1.foot2.ss $s.1.foot2.mx $s.1.foot2.mq $s.1.foot2.ll $s.1.foot2.pp $s.1.foot2.cc $s.1.foot2.vv $s.1.foot2.qq -side left -padx 2
 		pack $s.1.foot2 -side top -pady 4
 		frame $s.1.foot
@@ -597,6 +622,7 @@ proc EditSrcMixfile {typ} {
 	if {$mm_multichan && ($mix_outchans == 8)} {
 		$mixd2.1.see.000.dumm1 config -text "SEE PANS" -command "PanDiagram" -state normal -bd 2
 	} else {
+#RWD Oct 2024 see above; was an empty button (so better as a label), now here changed to a real button
 		$mixd2.1.see.000.dumm1 config -text "" -command {} -state disabled -background [option get . background {}] -bd 0
 	}
 	set f $mixd2
@@ -676,11 +702,11 @@ proc EditSrcMixfile {typ} {
 		return		
 	}
 	if {$typ != "sketchmix" && !$ins(run) && !$bulk(run)} {
-		$mixd2.1.see.1.foot2.ss config -text "Save+Mix Version" -command "QikSaveAndMix" -bg $evv(EMPH) -bd 2
-		$mixd2.1.see.1.foot2.pp config -text "Play Snd" -command "QikOutView 0" -bd 2
+		$mixd2.1.see.1.foot2.ss config -text "Save And Mix Version" -command "QikSaveAndMix" -bg $evv(EMPH) -bd 2
+		$mixd2.1.see.1.foot2.pp config -text "Play Sound" -command "QikOutView 0" -bd 2
 		$mixd2.1.see.1.foot2.cc config -text "Play Chans" -command "PlayChannel 1" -bd 2
-		$mixd2.1.see.1.foot2.vv config -text "View Snd" -command "QikOutView 1" -bg $evv(SNCOLOR) -bd 2
-		$mixd2.1.see.1.foot2.qq config -text "Keep Sound Mixed" -command "QikKeep" -bg $evv(QUIT_COLOR) -bd 2
+		$mixd2.1.see.1.foot2.vv config -text "View Sound" -command "QikOutView 1" -bg $evv(SNCOLOR) -bd 2
+		$mixd2.1.see.1.foot2.qq config -text "Keep Sound Mixed Here" -command "QikKeep" -bg $evv(QUIT_COLOR) -bd 2
 		$mixd2.1.see.1.foot.rr config -text "Recall A Previously Mixed Version" -command "QikRecall" -bd 2
 	} else {
 		$mixd2.1.see.1.foot2.ss config -text "" -command {} -bg [option get . background {}] -bd 0
