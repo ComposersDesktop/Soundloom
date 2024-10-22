@@ -1,5 +1,5 @@
 #
-# SOUND LOOM RELEASE mac version 17.0.4
+# SOUND LOOM RELEASE mac version 17.0.4E
 #
 
 #################
@@ -43,7 +43,8 @@ proc TidyUp {} {
 	} else {
 		catch {file delete $ofil}
 	}
-	set tvs  [file join $evv(CDPRESOURCE_DIR) tvscript$evv(CDP_EXT)]
+	#RWD 10-2024 must use the .tv file extension
+	set tvs  [file join $evv(CDPRESOURCE_DIR) tvscript.tv]
 	if {[file exists $tvs]} {
 		catch {file delete $tvs}
 	}
