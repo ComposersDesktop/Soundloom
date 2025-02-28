@@ -1,0 +1,22 @@
+Summary of TV MIDI input procedures in Soundloom:  TableEditor and Calculator.
+
+Selection of MIDI input device is handled via System Settings 2.
+The all-important control note (to terminate recording) is set here. This choice
+is used to write a private script "tvscript.tv", which is deleted when Soundloom is closed.
+The suggestion is that this would typically be the lowest note on the input keyboard, 
+but in principle it can be any MIDI note.
+
+An example of the script is included here. 
+(In Soundloom source code, the code to generate the script is in _newdisplay.tcl).
+
+On selecting e.g. TableEditor and clicking the little keyboard icon, 
+first a small dialog box is put up where MIDI Note options are set.
+On clicking "Get Midi" a new dialog box is shown saying "Waiting".
+OK has to be clicked in order for recording to start. 
+At this point literally the only way to get back to the main window is by pressing 
+the required trigger note on the keyboard. This ensures that the tv script exits,
+returning control to Soundloom.
+
+The recording is stored in the text file "tvout" inside _cdpenv. 
+The data is also copied to e.g. the INPUT table in Table Editor, suitably modified
+to show a note list possibly with durations.
